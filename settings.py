@@ -1,6 +1,6 @@
 # Set this to the path to Caffe installation on your system
-caffe_root = "/path/to/your/caffe/python"
-gpu = True
+caffe_root = "$HOME/.local/install/caffe/python"
+gpu = False
 
 # -------------------------------------
 # The following are hard-coded and hardly change unless we change to use a different generator.

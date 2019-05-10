@@ -77,6 +77,9 @@ class Sampler(object):
         image_size = util.get_image_size(image_shape)
         generator_output_size = util.get_image_size(generator_output_shape)
         encoder_input_size = util.get_image_size(encoder_input_shape)
+        print "generator output size {0}".format(generator_output_size)
+        print "encoder input size {0}".format(encoder_input_size)
+        print "condition output size {0}".format(image_size)
 
         # The top left offset to crop the output image to get a 227x227 image
         topleft = util.compute_topleft(image_size, generator_output_size)
@@ -112,7 +115,7 @@ class Sampler(object):
             generated = image_generator.forward()
             x = generated[gen_out_layer].copy()       # 256x256
 
-            # Crop from 256x256 to 227x227
+            # Crop from 256x256 to 227x227 OR to another image size! depends on image input size for condition net
             cropped_x = x[:,:,topleft[0]:topleft[0]+image_size[0], topleft[1]:topleft[1]+image_size[1]]
             cropped_x_copy = cropped_x.copy()
             
@@ -121,7 +124,11 @@ class Sampler(object):
 
             # Forward pass the image x to the condition net up to an unit k at the given layer
             # Backprop the gradient through the condition net to the image layer to get a gradient image 
+            print "condition", condition
             d_condition_x, prob, info = self.forward_backward_from_x_to_condition(net=condition_net, end=layer, image=cropped_x, condition=condition) 
+            print "d_condition_x image", len(d_condition_x[0][1]), " ", len(d_condition_x[0][2])
+            print prob
+            print info
 
             if inpainting is not None:
                 # Mask out the class gradient image
@@ -141,6 +148,10 @@ class Sampler(object):
             d_condition = self.backward_from_x_to_h(generator=image_generator, diff=d_condition_x256, start=gen_in_layer, end=gen_out_layer)
 
             self.print_progress(i, info, condition, prob, d_condition)
+            print "d_condition "
+            print d_condition
+            print "d_prior"
+            print d_prior
 
             # 3. Compute the epsilon3 term ---
             noise = np.zeros_like(h)
@@ -149,6 +160,8 @@ class Sampler(object):
 
             # Update h according to Eq.11 in the paper 
             d_h = epsilon1 * d_prior + epsilon2 * d_condition + noise
+            print "d_h "
+            print d_h
 
             # Plus the optional epsilon4 for matching the context region when in-painting
             if inpainting is not None:

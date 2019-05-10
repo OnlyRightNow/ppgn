@@ -29,7 +29,7 @@ class ClassConditionalSampler(Sampler):
             self.class_names = [ line.split(",")[0].split(" ", 1)[1].rstrip('\n') for line in synset_file.readlines()]
 
         # Hard-coded list of layers that has been tested 
-        self.fc_layers = ["fc6", "fc7", "fc8", "loss3/classifier", "fc1000", "prob"]
+        self.fc_layers = ["fc6", "fc7", "fc8", "loss3/classifier", "fc1000", "prob", "fc_nsfw", "fc8voc"]
         self.conv_layers = ["conv1", "conv2", "conv3", "conv4", "conv5"]
 
 
@@ -52,11 +52,14 @@ class ClassConditionalSampler(Sampler):
         elif end in self.conv_layers:
             layer_acts = acts[end][0, :, xy, xy]
 
+        print "layer acts ", layer_acts
         best_unit = layer_acts.argmax()     # highest probability unit
 
         # Compute the softmax probs by hand because it's handy in case we want to condition on hidden units as well
         exp_acts = np.exp(layer_acts - np.max(layer_acts))
+        print "exp acts ", exp_acts
         probs = exp_acts / (1e-10 + np.sum(exp_acts, keepdims=True))
+        print "probs ", probs
 
         # The gradient of log of softmax, log(p(y|x)), reduces to:
         softmax_grad = 1 - probs.copy()
@@ -66,14 +69,17 @@ class ClassConditionalSampler(Sampler):
         # Assign the gradient 
         if end in self.fc_layers:
             one_hot.flat[unit] = softmax_grad[unit]
+            # one_hot.flat[unit] = 1
         elif end in self.conv_layers:
             one_hot[:, unit, xy, xy] = softmax_grad[unit]
         else:
             raise Exception("Invalid layer type!")
         
+        print "one hot ", one_hot
         dst.diff[:] = one_hot
 
         # Backpropagate the gradient to the image layer 
+        # g = net.backward(start=end, diffs=['data'])['data'][0]
         diffs = net.backward(start=end, diffs=['data'])
         g = diffs['data'].copy()
 
@@ -84,7 +90,30 @@ class ClassConditionalSampler(Sampler):
             'best_unit': best_unit,
             'best_unit_prob': probs.flat[best_unit]
         }
+
         return g, obj_prob, info 
+
+        # dst = net.blobs[end]
+
+        # # Do forward pass
+        # acts = net.forward(data=image, end=end)
+
+        # # Do backwards pass
+        # z = np.zeros_like(dst.data)
+        # z.flat[unit] = 1
+        # dst.diff[:] = z
+        # g = net.backward(start=end, diffs=['data'])['data'][0]
+
+        # # Cleanup
+        # dst.diff.fill(0.)
+
+        # # Info to be printed out in the below 'print_progress' method
+        # info = {
+        #     'best_unit': 1,
+        #     'best_unit_prob': 1
+        # }
+
+        # return g, 1, info 
 
 
     def get_label(self, condition):
