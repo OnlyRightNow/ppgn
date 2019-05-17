@@ -10,13 +10,13 @@ if [ "$#" -ne "1" ]; then
 fi
 
 opt_layer=fc6
-act_layer=fc8
+act_layer=fc8_DL_PROJECT        #fc8_DL_PROJECT
 units="${1}"      # Index of neurons in fc layers or channels in conv layers
 xy=0              # Spatial position for conv layers, for fc layers: xy = 0
 
-n_iters=200       # Run for N iterations
-reset_every=0     # Reset the code every N iterations (for diversity)
-save_every=5      # Save a sample every N iterations
+n_iters=1000       # Run for N iterations
+reset_every=250     # Reset the code every N iterations (for diversity)
+save_every=25      # Save a sample every N iterations
 lr=1 
 lr_end=1          # Linearly decay toward this ending lr (e.g. for decaying toward 0, set lr_end = 1e-10)
 threshold=0       # Filter out samples below this threshold e.g. 0.98
@@ -32,8 +32,10 @@ epsilon3=1e-17    # noise
 init_file="None"    # Start from a random code. To start from a real code, replace with a path e.g. "images/filename.jpg"
 
 # Condition net
-net_weights="nets/caffenet/bvlc_reference_caffenet.caffemodel"
-net_definition="nets/caffenet/caffenet.prototxt"
+#net_weights="nets/caffenet/bvlc_reference_caffenet.caffemodel"	#default network
+#net_definition="nets/caffenet/caffenet.prototxt"		#default network
+net_weights="nets/caffenet_DL_PROJECT/solver_iter_130000.caffemodel"
+net_definition="nets/caffenet_DL_PROJECT/caffenet_deploy.prototxt"
 #-----------------------
 
 # Output dir

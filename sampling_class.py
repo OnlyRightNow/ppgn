@@ -29,7 +29,7 @@ class ClassConditionalSampler(Sampler):
             self.class_names = [ line.split(",")[0].split(" ", 1)[1].rstrip('\n') for line in synset_file.readlines()]
 
         # Hard-coded list of layers that has been tested 
-        self.fc_layers = ["fc6", "fc7", "fc8", "loss3/classifier", "fc1000", "prob", "fc_nsfw", "fc8voc"]
+        self.fc_layers = ["fc6", "fc7", "fc8", "fc8_DL_PROJECT", "loss3/classifier", "fc1000", "prob", "fc_nsfw", "fc8voc"]
         self.conv_layers = ["conv1", "conv2", "conv3", "conv4", "conv5"]
 
 
@@ -52,14 +52,14 @@ class ClassConditionalSampler(Sampler):
         elif end in self.conv_layers:
             layer_acts = acts[end][0, :, xy, xy]
 
-        print "layer acts ", layer_acts
+        # print "layer acts ", layer_acts
         best_unit = layer_acts.argmax()     # highest probability unit
 
         # Compute the softmax probs by hand because it's handy in case we want to condition on hidden units as well
         exp_acts = np.exp(layer_acts - np.max(layer_acts))
-        print "exp acts ", exp_acts
+        # print "exp acts ", exp_acts
         probs = exp_acts / (1e-10 + np.sum(exp_acts, keepdims=True))
-        print "probs ", probs
+        # print "probs ", probs
 
         # The gradient of log of softmax, log(p(y|x)), reduces to:
         softmax_grad = 1 - probs.copy()
@@ -75,7 +75,7 @@ class ClassConditionalSampler(Sampler):
         else:
             raise Exception("Invalid layer type!")
         
-        print "one hot ", one_hot
+        # print "one hot ", one_hot
         dst.diff[:] = one_hot
 
         # Backpropagate the gradient to the image layer 

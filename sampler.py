@@ -124,11 +124,11 @@ class Sampler(object):
 
             # Forward pass the image x to the condition net up to an unit k at the given layer
             # Backprop the gradient through the condition net to the image layer to get a gradient image 
-            print "condition", condition
+            # print "condition", condition
             d_condition_x, prob, info = self.forward_backward_from_x_to_condition(net=condition_net, end=layer, image=cropped_x, condition=condition) 
-            print "d_condition_x image", len(d_condition_x[0][1]), " ", len(d_condition_x[0][2])
-            print prob
-            print info
+            #print "d_condition_x image", len(d_condition_x[0][1]), " ", len(d_condition_x[0][2])
+            #print prob
+            #print info
 
             if inpainting is not None:
                 # Mask out the class gradient image
@@ -148,10 +148,10 @@ class Sampler(object):
             d_condition = self.backward_from_x_to_h(generator=image_generator, diff=d_condition_x256, start=gen_in_layer, end=gen_out_layer)
 
             self.print_progress(i, info, condition, prob, d_condition)
-            print "d_condition "
-            print d_condition
-            print "d_prior"
-            print d_prior
+            #print "d_condition "
+            #print d_condition
+            #print "d_prior"
+            #print d_prior
 
             # 3. Compute the epsilon3 term ---
             noise = np.zeros_like(h)
@@ -160,8 +160,8 @@ class Sampler(object):
 
             # Update h according to Eq.11 in the paper 
             d_h = epsilon1 * d_prior + epsilon2 * d_condition + noise
-            print "d_h "
-            print d_h
+            #print "d_h "
+            #print d_h
 
             # Plus the optional epsilon4 for matching the context region when in-painting
             if inpainting is not None:
