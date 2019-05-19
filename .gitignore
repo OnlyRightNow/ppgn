@@ -89,3 +89,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+
+#Dataset generator
+*.JPEG
+*.zip
+*.txt
