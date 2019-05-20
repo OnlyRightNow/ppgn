@@ -94,5 +94,10 @@ ENV/
 #Dataset generator
 *.JPEG
 *.zip
-*.txt
 *.jpg
+cat/_img_names.txt
+cat/test/_img_names.txt
+cat/validation/_img_names.txt
+cat/train/_img_names.txt
+dog/dog_img_names.txt
+dog/test/_img_names.txt
