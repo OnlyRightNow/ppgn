@@ -17,6 +17,9 @@ import scipy.misc, scipy.io
 import argparse 
 import util
 from sampler import Sampler
+import sys
+import datetime
+import time
 
 if settings.gpu:
     caffe.set_mode_gpu() # sampling on GPU 
@@ -94,13 +97,13 @@ class ClassConditionalSampler(Sampler):
 
     def print_progress(self, i, info, condition, prob, grad, probs):
         print "step: %04d\t max: %4s [%.2f]\t obj: %4s [%.2f]\t norm: [%.2f]" % ( i, info['best_unit'], info['best_unit_prob'], condition['unit'], prob, norm(grad) ),
-        if (settings.maxNumberClasseProbablityOutput < len(probs)):
-            length = settings.maxNumberClasseProbablityOutput
+        if settings.maxNumberClassProbabilityOutput < len(probs):
+            length = settings.maxNumberClassProbabilityOutput
         else:
             length = len(probs)
 
         for x in range(length):
-            print x, ":", probs[x],
+            print "%d: [%.4f]" %(x, probs[x]),
         print "\n"
 
 def get_code(encoder, path, layer, mask=None):
@@ -136,6 +139,22 @@ def get_code(encoder, path, layer, mask=None):
 
     return features, data
 
+# writer to write console outputs to console and to file at the same time
+class MyWriter:
+
+    def __init__(self, stdout, filename):
+        self.stdout = stdout
+        self.logfile = file(filename, 'a')
+
+    def write(self, text):
+        self.stdout.write(text)
+        self.logfile.write(text)
+
+    def close(self):
+        self.stdout.close()
+        self.logfile.close()
+
+
 def main():
 
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -166,8 +185,20 @@ def main():
     if args.lr_end < 0:
         args.lr_end = args.lr
 
+    # initialize MyWriter
+    logFilename = "%s/%s_%s_log.txt" % (
+            args.output_dir,
+            args.units,
+            str(datetime.datetime.now()).split('.')[0]
+        )
+    writer = MyWriter(sys.stdout, logFilename)
+    sys.stdout = writer
+
+    start_time = datetime.datetime.now()
+
     # summary
     print "-------------"
+    print " current time: %s" % str(start_time)
     print " units: %s    xy: %s" % (args.units, args.xy)
     print " n_iters: %s" % args.n_iters
     print " reset_every: %s" % args.reset_every
@@ -275,6 +306,10 @@ def main():
         util.save_image(img, name)
         if args.write_labels:
             util.write_label_to_img(name, label)
+    end_time = datetime.datetime.now()
+    elapsed_time = end_time - start_time
+    print "current time: %s" % str(end_time)
+    print "elapsed time since start: %s" % str(elapsed_time.split('.')[0])
 
 if __name__ == '__main__':
     main()

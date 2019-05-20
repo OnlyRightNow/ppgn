@@ -2,7 +2,9 @@
 caffe_root = "/home/sebastian/anaconda3/envs/nguyen/include/caffe"
 gpu = False
 
-maxNumberClasseProbablityOutput = 20
+# maximum number of class probability outputed.
+# If classifier-network has lower number of output classes it will output all.
+maxNumberClassProbabilityOutput = 20
 
 # -------------------------------------
 # The following are hard-coded and hardly change unless we change to use a different generator.
