@@ -1,6 +1,8 @@
 # Set this to the path to Caffe installation on your system
-caffe_root = "/path/to/your/caffe/python"
-gpu = True
+caffe_root = "/home/sebastian/anaconda3/envs/nguyen/include/caffe"
+gpu = False
+
+maxNumberClasseProbablityOutput = 20
 
 # -------------------------------------
 # The following are hard-coded and hardly change unless we change to use a different generator.

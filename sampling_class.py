@@ -84,7 +84,7 @@ class ClassConditionalSampler(Sampler):
             'best_unit': best_unit,
             'best_unit_prob': probs.flat[best_unit]
         }
-        return g, obj_prob, info 
+        return g, obj_prob, info, probs
 
 
     def get_label(self, condition):
@@ -92,8 +92,16 @@ class ClassConditionalSampler(Sampler):
         return self.class_names[unit]
 
 
-    def print_progress(self, i, info, condition, prob, grad):
-        print "step: %04d\t max: %4s [%.2f]\t obj: %4s [%.2f]\t norm: [%.2f]" % ( i, info['best_unit'], info['best_unit_prob'], condition['unit'], prob, norm(grad) )
+    def print_progress(self, i, info, condition, prob, grad, probs):
+        print "step: %04d\t max: %4s [%.2f]\t obj: %4s [%.2f]\t norm: [%.2f]" % ( i, info['best_unit'], info['best_unit_prob'], condition['unit'], prob, norm(grad) ),
+        if (settings.maxNumberClasseProbablityOutput < len(probs)):
+            length = settings.maxNumberClasseProbablityOutput
+        else:
+            length = len(probs)
+
+        for x in range(length):
+            print x, ":", probs[x],
+        print "\n"
 
 def get_code(encoder, path, layer, mask=None):
     '''
