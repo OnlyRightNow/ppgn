@@ -93,6 +93,20 @@ ENV/
 # Rope project settings
 .ropeproject
 
+<<<<<<< HEAD
 \.idea/
 
 settings\.py
+=======
+
+#Dataset generator
+*.JPEG
+*.zip
+*.jpg
+cat/_img_names.txt
+cat/test/_img_names.txt
+cat/validation/_img_names.txt
+cat/train/_img_names.txt
+dog/dog_img_names.txt
+dog/test/_img_names.txt
+>>>>>>> 4d76520ecbc2bcd38bb1b1f472e2cc41f0cf31a9
