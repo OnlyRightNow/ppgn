@@ -124,6 +124,7 @@ class Sampler(object):
 
             # Forward pass the image x to the condition net up to an unit k at the given layer
             # Backprop the gradient through the condition net to the image layer to get a gradient image 
+
             # print "condition", condition
             d_condition_x, prob, info = self.forward_backward_from_x_to_condition(net=condition_net, end=layer, image=cropped_x, condition=condition) 
             #print "d_condition_x image", len(d_condition_x[0][1]), " ", len(d_condition_x[0][2])
@@ -146,6 +147,7 @@ class Sampler(object):
             # Backpropagate the above gradient all the way to h (through generator)
             # This gradient 'd_condition' is d log(p(y|h)) / dh (the epsilon2 term in Eq. 11 in the paper)
             d_condition = self.backward_from_x_to_h(generator=image_generator, diff=d_condition_x256, start=gen_in_layer, end=gen_out_layer)
+
 
             self.print_progress(i, info, condition, prob, d_condition)
             #print "d_condition "
