@@ -1,0 +1,22 @@
+-------------
+ current time: 2019-05-23 07:56:15.494964
+ units: 0    xy: 0
+ n_iters: 200
+ reset_every: 0
+ save_every: 5
+ threshold: 0.0
+ epsilon1: 1e-05
+ epsilon2: 1.0
+ epsilon3: 1e-17
+ epsilon4: 0.0
+ start learning rate: 1.0
+ end learning rate: 1.0
+ seed: 0
+ opt_layer: fc6
+ act_layer: fc8_DL_PROJECT
+ init_file: None
+-------------
+ output dir: output/fc8_DL_PROJECT_chain_0_eps1_1e-5_eps3_1e-17
+ net weights: nets/caffenet_DL_PROJECT/weights_50000.caffemodel
+ net definition: nets/caffenet_DL_PROJECT/caffenet_deploy.prototxt
+-------------

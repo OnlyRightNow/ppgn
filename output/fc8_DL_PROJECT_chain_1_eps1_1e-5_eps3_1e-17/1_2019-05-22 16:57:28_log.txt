@@ -1,0 +1,26 @@
+-------------
+ current time: 2019-05-22 16:57:28.585978
+ units: 1    xy: 0
+ n_iters: 1000
+ reset_every: 250
+ save_every: 25
+ threshold: 0.0
+ epsilon1: 1e-05
+ epsilon2: 1.0
+ epsilon3: 1e-17
+ epsilon4: 0.0
+ start learning rate: 1.0
+ end learning rate: 1.0
+ seed: 0
+ opt_layer: fc6
+ act_layer: fc8_DL_PROJECT
+ init_file: None
+-------------
+ output dir: output/fc8_DL_PROJECT_chain_1_eps1_1e-5_eps3_1e-17
+ net weights: nets/caffenet_DL_PROJECT/weigths_10000.caffemodel
+ net definition: nets/caffenet_DL_PROJECT/caffenet_deploy.prototxt
+-------------
+>> -3.740100637951779 3.8016602149671153
+generator output size (256, 256)
+encoder input size (227, 227)
+condition output size (227, 227)

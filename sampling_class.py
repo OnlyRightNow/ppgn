@@ -32,7 +32,7 @@ class ClassConditionalSampler(Sampler):
             self.class_names = [ line.split(",")[0].split(" ", 1)[1].rstrip('\n') for line in synset_file.readlines()]
 
         # Hard-coded list of layers that has been tested 
-        self.fc_layers = ["fc6", "fc7", "fc8", "loss3/classifier", "fc1000", "prob"]
+        self.fc_layers = ["fc6", "fc7", "fc8", "fc8_DL_PROJECT", "loss3/classifier", "fc1000", "prob"]
         self.conv_layers = ["conv1", "conv2", "conv3", "conv4", "conv5"]
 
 
