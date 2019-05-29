@@ -3,7 +3,7 @@
 # Anh Nguyen <anh.ng8@gmail.com>
 # 2016
 
-# Take in an unit number
+# Take in a unit number
 if [ "$#" -ne "1" ]; then
   echo "Provide 1 output unit number e.g. 945 for bell pepper."
   exit 1
@@ -14,10 +14,10 @@ act_layer=fc8_DL_PROJECT
 units="${1}"      # Index of neurons in fc layers or channels in conv layers
 xy=0              # Spatial position for conv layers, for fc layers: xy = 0
 
-n_iters=4000       # Run for N iterations
-reset_every=200     # Reset the code every N iterations (for diversity)
-save_every=50      # Save a sample every N iterations
-lr=1 
+n_iters=2000       # Run for N iterations. HAS TO BE A MULTIPLE OF reset_every !!
+reset_every=200    # Reset the code every N iterations (for diversity) HAS TO BE A MULTIPLE OF save_every !!
+save_every=10      # Save a sample every N iterations
+lr=1
 lr_end=1          # Linearly decay toward this ending lr (e.g. for decaying toward 0, set lr_end = 1e-10)
 threshold=0       # Filter out samples below this threshold e.g. 0.98
 
@@ -32,12 +32,12 @@ epsilon3=1e-17    # noise
 init_file="None"    # Start from a random code. To start from a real code, replace with a path e.g. "images/filename.jpg"
 
 # Condition net
-net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run_cat_baseball_car_airplane_face/solver_iter_90000.caffemodel"
+net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run2b_dog_cat_female_male_ball/solver_iter_100000.caffemodel"
 net_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"
 #-----------------------
 
 # Output dir
-output_dir="output/24_05_midterm/run1/neuron4_w90k"  #"${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
+output_dir="output/test_images_nicely_arranged"  #"${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
 mkdir -p ${output_dir}
 
 # Directory to store samples
@@ -74,12 +74,15 @@ for unit in ${units}; do
 
         # Plot the samples
         if [ "${save_every}" -gt "0" ]; then
+	    num_cols=`echo "${reset_every} / ${save_every} + 1" | bc`
+            num_images=`echo "${n_iters} / ${save_every} + ${num_cols}"| bc`
+            echo "Creating montage of images with a total of ${num_cols} columns"
 
-            f_chain=${output_dir}/chain_${units}_hx_${epsilon1}_noise_${epsilon3}__${seed}.jpg
+            f_chain=${output_dir}/chain_unit_${units}_lr_${lr}_lr_end_${lr_end}_seed_${seed}.jpg        # ${output_dir}/chain_${units}_hx_${epsilon1}_noise_${epsilon3}__${seed}.jpg
 
             # Make a montage of steps
-            montage `ls ${sample_dir}/*.jpg | head -200` -tile 10x -geometry +1+1 ${f_chain}
-      
+            montage `ls ${sample_dir}/*.jpg | head -${num_images}` -tile ${num_cols}x -geometry +1+1 ${f_chain}
+
             readlink -f ${f_chain}
         fi
     done
