@@ -95,7 +95,7 @@ class Sampler(object):
 
         condition_idx = 0 
         list_samples = []
-        i = 0
+        i = 1
 
         while True:
 
@@ -159,7 +159,7 @@ class Sampler(object):
             h = np.clip(h, a_min=0, a_max=30)   # Keep the code within a realistic range
 
             # Reset the code every N iters (for diversity when running a long sampling chain)
-            if reset_every > 0 and i % reset_every == 0 and i > 0: 
+            if reset_every > 0 and (i) % reset_every == 0 and i > 1:
                 h = np.random.normal(0, 1, h.shape)
 
                 # Experimental: For sample diversity, it's a good idea to randomly pick epsilon1 as well
@@ -170,8 +170,9 @@ class Sampler(object):
             last_prob = prob
 
             # Filter samples based on threshold or every N iterations
-            if save_every > 0 and i % save_every == 0 and prob > threshold:
-                name = "%s/samples/%05d.jpg" % (output_dir, i)
+            # if save_every > 0 and i % save_every == 0 and prob > threshold:
+            if (save_every > 0 and i % save_every == 0 and prob > threshold) or (i-1) % reset_every == 0:
+    		name = "%s/samples/%05d.jpg" % (output_dir, i)
 
                 label = self.get_label(condition)
                 list_samples.append( (last_xx.copy(), name, label) ) 
