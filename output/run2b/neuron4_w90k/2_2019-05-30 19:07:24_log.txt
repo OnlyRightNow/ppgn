@@ -1,0 +1,22 @@
+-------------
+ current time: 2019-05-30 19:07:24.548742
+ units: 2    xy: 0
+ n_iters: 4000
+ reset_every: 200
+ save_every: 50
+ threshold: 0.0
+ epsilon1: 1e-05
+ epsilon2: 1.0
+ epsilon3: 1e-17
+ epsilon4: 0.0
+ start learning rate: 1.0
+ end learning rate: 1.0
+ seed: 0
+ opt_layer: fc6
+ act_layer: fc8_DL_PROJECT
+ init_file: None
+-------------
+ output dir: output/run2b/neuron4_w90k
+ net weights: /home/pussycat/finetune_caffe_model/models/caffenet/run2b_dog_cat_female_male/solver_iter_90000.caffemodel
+ net definition: /home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt
+-------------

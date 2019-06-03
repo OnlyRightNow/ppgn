@@ -14,9 +14,9 @@ act_layer=fc8_DL_PROJECT
 units="${1}"      # Index of neurons in fc layers or channels in conv layers
 xy=0              # Spatial position for conv layers, for fc layers: xy = 0
 
-n_iters=1000       # Run for N iterations
+n_iters=3000       # Run for N iterations
 reset_every=200     # Reset the code every N iterations (for diversity)
-save_every=5      # Save a sample every N iterations
+save_every=50      # Save a sample every N iterations
 lr=1 
 lr_end=1          # Linearly decay toward this ending lr (e.g. for decaying toward 0, set lr_end = 1e-10)
 threshold=0       # Filter out samples below this threshold e.g. 0.98
@@ -32,12 +32,12 @@ epsilon3=1e-17    # noise
 init_file="None"    # Start from a random code. To start from a real code, replace with a path e.g. "images/filename.jpg"
 
 # Condition net
-net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run_dog_cat_female_male_ball/solver_iter_50000.caffemodel"
+net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run5_snapshot/solver_iter_95000.caffemodel"
 net_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"
 #-----------------------
 
 # Output dir
-output_dir="output/${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
+output_dir="output/run5/neuron4_w95k"  #"${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
 mkdir -p ${output_dir}
 
 # Directory to store samples
