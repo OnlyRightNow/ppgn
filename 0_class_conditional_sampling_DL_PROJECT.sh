@@ -14,9 +14,9 @@ act_layer=fc8_DL_PROJECT
 units="${1}"      # Index of neurons in fc layers or channels in conv layers
 xy=0              # Spatial position for conv layers, for fc layers: xy = 0
 
-n_iters=2000       # Run for N iterations. HAS TO BE A MULTIPLE OF reset_every !!
+n_iters=1000       # Run for N iterations. HAS TO BE A MULTIPLE OF reset_every !!
 reset_every=200    # Reset the code every N iterations (for diversity) HAS TO BE A MULTIPLE OF save_every !!
-save_every=10      # Save a sample every N iterations
+save_every=20      # Save a sample every N iterations
 lr=1
 lr_end=1          # Linearly decay toward this ending lr (e.g. for decaying toward 0, set lr_end = 1e-10)
 threshold=0       # Filter out samples below this threshold e.g. 0.98
@@ -32,7 +32,7 @@ epsilon3=1e-17    # noise
 init_file="None"    # Start from a random code. To start from a real code, replace with a path e.g. "images/filename.jpg"
 
 # Condition net
-net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run2b_dog_cat_female_male_ball/solver_iter_100000.caffemodel"
+net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run5_snapshot/solver_iter_95000.caffemodel"
 net_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"
 #-----------------------
 
