@@ -18,7 +18,7 @@ generator_in_layer = "feat"
 generator_out_layer = "deconv0"
 
 # Encoder E
-encoder_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run5_snapshot/solver_iter_95000.caffemodel"
+encoder_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run6_dog_cat_female_male_ball_100/solver_iter_100000.caffemodel"
 encoder_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"
 # encoder_weights="/home/pussycat/finetune_caffe_model/models/weights/bvlc_reference_caffenet.caffemodel"
 # encoder_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"

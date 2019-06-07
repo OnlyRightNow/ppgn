@@ -178,7 +178,7 @@ def main():
     parser.add_argument('--output_dir', metavar='b', type=str, default=".", help='Output directory for saving results')
     parser.add_argument('--net_weights', metavar='b', type=str, default=settings.encoder_weights, help='Weights of the net being visualized')
     parser.add_argument('--net_definition', metavar='b', type=str, default=settings.encoder_definition, help='Definition of the net being visualized')
-
+    parser.add_argument('--encoder_weights', metavar='b', type=str, default=settings.encoder_weights, help='Weights of the encoder (same as net_weights!!!)')
     args = parser.parse_args()
 
     # Default to constant learning rate
@@ -220,10 +220,11 @@ def main():
     print " output dir: %s" % args.output_dir
     print " net weights: %s" % args.net_weights
     print " net definition: %s" % args.net_definition
+    print " encoder weights: %s" % args.encoder_weights
     print "-------------"
 
     # encoder and generator for images 
-    encoder = caffe.Net(settings.encoder_definition, settings.encoder_weights, caffe.TEST)
+    encoder = caffe.Net(settings.encoder_definition, args.encoder_weights, caffe.TEST)
     generator = caffe.Net(settings.generator_definition, settings.generator_weights, caffe.TEST)
 
     # condition network, here an image classification net
@@ -309,7 +310,7 @@ def main():
     end_time = datetime.datetime.now()
     elapsed_time = end_time - start_time
     print "current time: %s" % str(end_time)
-    print "elapsed time since start: %s" % str(elapsed_time.split('.')[0])
+    # print "elapsed time since start: %s" % str(elapsed_time.split('.')[0])
 
 if __name__ == '__main__':
     main()
