@@ -39,12 +39,11 @@ run_number=${4}
 iteration_number=${5}
 
 # Condition net
-# net_weights="/home/pussycat/finetune_caffe_model/models/caffenet/run6_dog_cat_female_male_ball_100/solver_iter_100000.caffemodel"
 net_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"
 #-----------------------
 
 # Output dir
-output_dir="output/visualize_run_${run_number}"       #"${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
+output_dir="output/visualize_all_runs/visualize_run_${run_number}"       #"${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
 mkdir -p ${output_dir}
 
 # Directory to store samples
