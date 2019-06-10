@@ -14,7 +14,7 @@ import caffe
 import numpy as np
 from numpy.linalg import norm
 import scipy.misc, scipy.io
-import argparse 
+import argparse
 import util
 from sampler import Sampler
 import sys
@@ -22,7 +22,7 @@ import datetime
 import time
 
 if settings.gpu:
-    caffe.set_mode_gpu() # sampling on GPU 
+    caffe.set_mode_gpu() # sampling on GPU
 
 class ClassConditionalSampler(Sampler):
 
@@ -31,7 +31,7 @@ class ClassConditionalSampler(Sampler):
         with open(settings.synset_file, 'r') as synset_file:
             self.class_names = [ line.split(",")[0].split(" ", 1)[1].rstrip('\n') for line in synset_file.readlines()]
 
-        # Hard-coded list of layers that has been tested 
+        # Hard-coded list of layers that has been tested
         self.fc_layers = ["fc6", "fc7", "fc8", "fc8_DL_PROJECT", "loss3/classifier", "fc1000", "prob"]
         self.conv_layers = ["conv1", "conv2", "conv3", "conv4", "conv5"]
 
@@ -73,7 +73,7 @@ class ClassConditionalSampler(Sampler):
             one_hot[:, unit, xy, xy] = softmax_grad[unit]
         else:
             raise Exception("Invalid layer type!")
-        
+
         dst.diff[:] = one_hot
 
         # Backpropagate the gradient to the image layer 
@@ -179,6 +179,7 @@ def main():
     parser.add_argument('--net_weights', metavar='b', type=str, default=settings.encoder_weights, help='Weights of the net being visualized')
     parser.add_argument('--net_definition', metavar='b', type=str, default=settings.encoder_definition, help='Definition of the net being visualized')
     parser.add_argument('--encoder_weights', metavar='b', type=str, default=settings.encoder_weights, help='Weights of the encoder (same as net_weights!!!)')
+    parser.add_argument('--encoder_definition', metavar='b', type=str, default=settings.encoder_definition, help='definition of the encoder (same as for net!!!)')
     args = parser.parse_args()
 
     # Default to constant learning rate
@@ -221,10 +222,11 @@ def main():
     print " net weights: %s" % args.net_weights
     print " net definition: %s" % args.net_definition
     print " encoder weights: %s" % args.encoder_weights
+    print " encoder definition: %s" % args.encoder_definition
     print "-------------"
 
     # encoder and generator for images 
-    encoder = caffe.Net(settings.encoder_definition, args.encoder_weights, caffe.TEST)
+    encoder = caffe.Net(args.encoder_definition, args.encoder_weights, caffe.TEST)
     generator = caffe.Net(settings.generator_definition, settings.generator_weights, caffe.TEST)
 
     # condition network, here an image classification net

@@ -34,16 +34,17 @@ init_file="None"    # Start from a random code. To start from a real code, repla
 # parameters from visualization_loop.sh
 neuron_name="${2}"
 net_weights="${3}"
+net_definition="${6}"
 encoder_weights="${3}"  # encoder weights should be the same as net_weights!!!
+encoder_definition="${6}"
 run_number=${4}
 iteration_number=${5}
 
-# Condition net
-net_definition="/home/pussycat/finetune_caffe_model/models/caffenet/caffenet_deploy.prototxt"
+echo " net definition ${net_definition}"
 #-----------------------
 
 # Output dir
-output_dir="output/visualize_all_runs/visualize_run_${run_number}"       #"${act_layer}_chain_${units}_eps1_${epsilon1}_eps3_${epsilon3}"
+output_dir="output/visualize_all_runs_with_confidence/visualize_run_${run_number}"
 mkdir -p ${output_dir}
 
 # Directory to store samples
@@ -78,13 +79,15 @@ for unit in ${units}; do
             --net_weights ${net_weights} \
             --net_definition ${net_definition} \
             --encoder_weights ${encoder_weights} \
+            --encoder_definition ${encoder_definition} \
+            --write_labels True \
         # Plot the samples
         if [ "${save_every}" -gt "0" ]; then
 	    num_cols=`echo "${reset_every} / ${save_every} + 1" | bc`
             num_images=`echo "${n_iters} / ${save_every} + ${num_cols}"| bc`
             echo "Creating montage of images with a total of ${num_cols} columns"
 
-            f_chain=${output_dir}/run_${run_number}_neuron_${units}_${neuron_name}_iteration_${iteration_number}_lr_${lr}_lr_end_${lr_end}_seed_${seed}.jpg        # ${output_dir}/chain_${units}_hx_${epsilon1}_noise_${epsilon3}__${seed}.jpg
+            f_chain=${output_dir}/run_${run_number}_neuron_${units}_${neuron_name}_iteration_${iteration_number}_lr_${lr}_lr_end_${lr_end}_seed_${seed}.jpg
 
             # Make a montage of steps
             montage -font Nimbus-Sans-L `ls ${sample_dir}/*.jpg | head -${num_images}` -tile ${num_cols}x -geometry +1+1 ${f_chain}

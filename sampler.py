@@ -174,8 +174,9 @@ class Sampler(object):
             if (save_every > 0 and i % save_every == 0 and prob > threshold) or (i-1) % reset_every == 0:
     		name = "%s/samples/%05d.jpg" % (output_dir, i)
 
-                label = self.get_label(condition)
-                list_samples.append( (last_xx.copy(), name, label) ) 
+                # label = self.get_label(condition)
+                label_prob = str(last_prob)
+                list_samples.append( (last_xx.copy(), name, label_prob) )
 
             # Stop if grad is 0
             if norm(d_h) == 0:
